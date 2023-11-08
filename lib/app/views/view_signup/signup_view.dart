@@ -1,12 +1,11 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:flutter/services.dart';
 import 'package:rentify/app/l10n/app_localizations.dart';
 import 'package:rentify/app/routes/app_router.gr.dart';
-import 'package:rentify/app/views/view_signin/signin_view.dart';
 import 'package:rentify/app/views/view_signup/view_model/signup_event.dart';
 import 'package:rentify/app/views/view_signup/view_model/signup_state.dart';
 import 'package:rentify/app/views/view_signup/view_model/signup_view_model.dart';
 import 'package:flutter/material.dart';
-import 'package:rentify/app/l10n/app_localizations.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rentify/core/widgets/context_widgets.dart';
 import 'package:rentify/core/widgets/date_widget.dart';
@@ -15,23 +14,24 @@ import 'package:rentify/core/widgets/date_widget.dart';
 class SignUpView extends StatelessWidget with CustomWidgets {
   const SignUpView({super.key});
 
-  // 3 textInput dolduktan sonra buton aktiflessin
-  bool validateFields(BuildContext context) {
+  void validateFields(BuildContext context) {
     final viewModelRead = context.read<SignUpViewModel>();
 
     // Tüm alanlar dolu mu kontrol ediyoruz
-    bool isButtonEnabled = viewModelRead.nameController.text.isNotEmpty &&
+    bool isButtonEnabled = viewModelRead.userNameController.text.isNotEmpty &&
+        viewModelRead.nameController.text.isNotEmpty &&
         viewModelRead.surNameController.text.isNotEmpty &&
         viewModelRead.adressController.text.isNotEmpty &&
         viewModelRead.phoneController.text.isNotEmpty &&
         viewModelRead.passwordOneController.text.isNotEmpty &&
+        viewModelRead.passwordTwoController.text.isNotEmpty &&
         viewModelRead.emailController.text
             .isNotEmpty && //hepsi bos degilse true doner buton aktiflesir.
         RegExp(r'^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[a-zA-Z0-9]+$')
             .hasMatch(viewModelRead.emailController.text);
 
     // Butonun etkinleştirilmesi veya devre dışı bırakılması için IsButtonEnabledEvent olayını tetikliyoruz
-    return isButtonEnabled;
+    viewModelRead.add(IsButtonEnabledEvent(isButtonEnabled));
   }
 
   @override
@@ -40,6 +40,27 @@ class SignUpView extends StatelessWidget with CustomWidgets {
         create: (context) => SignUpViewModel(),
         child: BlocBuilder<SignUpViewModel, SignUpState>(
             builder: (context, state) {
+          String dropdownValue = 'Landlord';
+          final viewModelRead = context.read<SignUpViewModel>();
+
+          // anlık tetiklemeye yardimci, dinliyor, 3 ınput girdilerini, her bir textInput'a girilen her karakter veya her değişiklik için tetiklenecek
+          viewModelRead.userNameController
+              .addListener(() => validateFields(context));
+          viewModelRead.nameController
+              .addListener(() => validateFields(context));
+          viewModelRead.surNameController
+              .addListener(() => validateFields(context));
+          viewModelRead.adressController
+              .addListener(() => validateFields(context));
+          viewModelRead.phoneController
+              .addListener(() => validateFields(context));
+          viewModelRead.passwordOneController
+              .addListener(() => validateFields(context));
+          viewModelRead.passwordTwoController
+              .addListener(() => validateFields(context));
+          viewModelRead.emailController
+              .addListener(() => validateFields(context));
+
           return Scaffold(
             appBar: transparentAppBar(context, () {
               context.router.pop();
@@ -74,40 +95,109 @@ class SignUpView extends StatelessWidget with CustomWidgets {
                             ),
                           ],
                         ),
+                        DropdownButton<String>(
+                          value: dropdownValue,
+                          onChanged: (String? newValue) {
+                            dropdownValue = newValue!;
+                            viewModelRead.add(IsLandlordSelectedEvent(
+                                dropdownValue == 'Landlord' ? true : false));
+                          },
+                          items: <String>['Landlord', 'Tenant']
+                              .map<DropdownMenuItem<String>>((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(value),
+                            );
+                          }).toList(),
+                        ),
                         textInput(
-                            L10n.of(context)!.userName,
-                            'isminizi giriniz',
-                            context,
-                            context.read<SignUpViewModel>().nameController),
+                          L10n.of(context)!.userName,
+                          'isminizi giriniz',
+                          context,
+                          viewModelRead.nameController,
+                          keyboardType: TextInputType.text,
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return L10n.of(context)!.pleaseEnterYourName;
+                            }
+                            return null;
+                          },
+                        ),
                         textInput(
-                            L10n.of(context)!.userSurName,
-                            'Soyadınızı giriniz',
-                            context,
-                            context.read<SignUpViewModel>().surNameController),
+                          L10n.of(context)!.userSurName,
+                          'Soyadınızı giriniz',
+                          context,
+                          viewModelRead.surNameController,
+                          keyboardType: TextInputType.text,
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return L10n.of(context)!.pleaseEnterYourName;
+                            }
+                            return null;
+                          },
+                        ),
+                        textInput(
+                          L10n.of(context)!.userName,
+                          'Kullanıcı Adı Oluşturunuz',
+                          context,
+                          viewModelRead.userNameController,
+                          keyboardType: TextInputType.text,
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return L10n.of(context)!.pleaseEnterYourName;
+                            }
+                            return null;
+                          },
+                        ),
                         textInput(
                           L10n.of(context)!.email,
                           'E-posta adresinizi giriniz',
                           context,
-                          context.read<SignUpViewModel>().emailController,
+                          viewModelRead.emailController,
+                          keyboardType: TextInputType.emailAddress,
+                          validator: (value) {
+                            if (!RegExp(
+                                    r'^[a-zA-Z0-9ğüşıöjçĞÜşŞİÖÇ\._%+-]+@[a-zA-Z0-9ğüşıöjçĞÜşŞİÖÇ\.-]+\.[a-zA-ZğüşıöçĞÜşŞİÖÇ]{2,}$')
+                                .hasMatch(value!)) {
+                              return L10n.of(context)!.emailValidationMessage;
+                            }
+                            return null;
+                          },
                         ),
                         textInput(
                           L10n.of(context)!.phone,
                           'Telefon numaranızı giriniz',
                           context,
-                          context.read<SignUpViewModel>().phoneController,
+                          viewModelRead.phoneController,
+                          keyboardType: TextInputType.number,
+                          inputFormatters: [
+                            FilteringTextInputFormatter.digitsOnly
+                          ],
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return L10n.of(context)!.pleaseEnterYourName;
+                            }
+                            return null;
+                          },
                         ),
                         textInput(
                           L10n.of(context)!.password,
                           'Şifrenizi giriniz',
                           context,
-                          context.read<SignUpViewModel>().passwordOneController,
+                          viewModelRead.passwordOneController,
                         ),
                         textInput(
                           L10n.of(context)!.password,
                           'Şifrenizi tekrar giriniz',
                           context,
-                          context.read<SignUpViewModel>().passwordTwoController,
+                          viewModelRead.passwordTwoController,
                         ),
+                        if (viewModelRead.passwordOneController.text !=
+                            viewModelRead.passwordTwoController.text)
+                          const Text(
+                            'Şifreler uyuşmuyor',
+                            style: TextStyle(color: Colors.red),
+                          ),
                         Padding(
                           padding: const EdgeInsets.only(top: 20),
                           child: Column(
@@ -121,7 +211,7 @@ class SignUpView extends StatelessWidget with CustomWidgets {
                                   ),
                                   CustomDatePicker(
                                     onDateSelected: (isDateSelected) {
-                                      context.read<SignUpViewModel>().add(
+                                      viewModelRead.add(
                                           IsDateSelectedEvent(isDateSelected));
                                     },
                                   ),
@@ -134,7 +224,7 @@ class SignUpView extends StatelessWidget with CustomWidgets {
                           L10n.of(context)!.address,
                           'Adresinizi giriniz',
                           context,
-                          context.read<SignUpViewModel>().adressController,
+                          viewModelRead.adressController,
                         ),
                         const SizedBox(
                           height: 30,
@@ -144,15 +234,14 @@ class SignUpView extends StatelessWidget with CustomWidgets {
                             buildButton(
                               context,
                               label: L10n.of(context)!.signUp,
-                              backgroundColor: validateFields(context)
+                              backgroundColor: state.isButtonEnabled
                                   ? const Color(0xFF304FFF)
                                   : Colors.grey,
                               hoverColor:
                                   const Color.fromARGB(158, 125, 123, 123),
-                              onPressed: validateFields(context)
+                              onPressed: state.isButtonEnabled
                                   ? () {
-                                      context
-                                          .read<SignUpViewModel>()
+                                      viewModelRead
                                           .add(SignUpInitialEvent(context));
                                     }
                                   : () {},

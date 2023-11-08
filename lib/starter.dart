@@ -20,7 +20,7 @@ Future<void> launchApp() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   await FirebaseMessaging.instance.setAutoInitEnabled(true);
-  await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
+  //await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
 
   await Hive.initFlutter('database');
   await Hive.openBox(

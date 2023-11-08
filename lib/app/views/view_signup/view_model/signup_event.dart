@@ -12,3 +12,15 @@ class IsDateSelectedEvent extends SignUpEvent {
 
   IsDateSelectedEvent(this.isDateSelected);
 }
+
+class IsLandlordSelectedEvent extends SignUpEvent {
+  final bool isLandlordSelected;
+
+  IsLandlordSelectedEvent(this.isLandlordSelected);
+}
+
+class IsButtonEnabledEvent extends SignUpEvent {
+  final bool isButtonEnabled;
+
+  IsButtonEnabledEvent(this.isButtonEnabled);
+}

@@ -1,15 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-abstract class SignUpState {
-  SignUpState(bool isDateSelected);
-
-  get isDateSelected => null;
-}
-
-class SignUpInitial extends SignUpState {
-
+class SignUpState {
+  bool isButtonEnabled;
   bool isDateSelected;
-
-  SignUpInitial(bool bool, {
-    required this.isDateSelected,
-  }) : super(false);
+  bool isLandlordSelected;
+  SignUpState(this.isDateSelected, this.isLandlordSelected,[this.isButtonEnabled = false]);
 }
