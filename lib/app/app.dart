@@ -1,9 +1,9 @@
 import 'package:flavor/flavor.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/adapters.dart';
 import 'package:rentify/app/l10n/app_localizations.dart';
 import 'package:rentify/app/routes/app_router.dart';
-import 'package:rentify/app/theme/light_theme_data.dart';
 //import 'package:firebase_core/firebase_core.dart';
 
 class App extends StatefulWidget {
@@ -15,12 +15,6 @@ class App extends StatefulWidget {
     stateLang?.changeLanguage(newLocale);
   }
 
-  static void setTheme(BuildContext context, ThemeData newThemeData) {
-    final stateTheme = context.findAncestorStateOfType<_AppState>();
-
-    stateTheme?.changeTheme(newThemeData);
-  }
-
   @override
   State<App> createState() => _AppState();
 }
@@ -28,21 +22,8 @@ class App extends StatefulWidget {
 class _AppState extends State<App> {
   Locale _locale = const Locale('us', 'US');
   //Locale _locale = const Locale('us', 'US');
-  ThemeData _themeData = AppThemeLight.getTheme();
   //ThemeData _themeData = AppThemeDark.getTheme();
 
-  changeTheme(ThemeData themeData) {
-    setState(() {
-      try {
-        _themeData = themeData;
-      } catch (e) {
-        if (kDebugMode) {
-          debugPrint(e.toString());
-        }
-        rethrow;
-      }
-    });
-  }
 
   changeLanguage(Locale locale) {
     setState(() {
@@ -64,15 +45,22 @@ class _AppState extends State<App> {
     // AuthController authController = Get.put(AuthController());
     // authController.decideRoute();
 
-    return FlavorBanner(
-      child: //ScreenUtilInit(
-        MaterialApp.router(
-            supportedLocales: L10n.supportedLocales,
-            localizationsDelegates: L10n.localizationsDelegates,
-            debugShowCheckedModeBanner: false,
-            theme: _themeData,
-            locale: _locale,
-            routerConfig: _appRouter.config()),
+    return ValueListenableBuilder(
+      valueListenable: Hive.box('settings').listenable(),
+      builder: (context, box, child) {
+        final isDark = box.get('isDark', defaultValue: false);
+        final isNewUser = box.get('isNewUser', defaultValue: true);
+        final isLand = box.get('isLand', defaultValue: false);
+        return FlavorBanner(
+          child: MaterialApp.router(
+              supportedLocales: L10n.supportedLocales,
+              localizationsDelegates: L10n.localizationsDelegates,
+              debugShowCheckedModeBanner: false,
+              theme: isDark? ThemeData.dark(): ThemeData.light(),
+              locale: _locale,
+              routerConfig: _appRouter.config()),
+        );
+      },
     );
   }
 }

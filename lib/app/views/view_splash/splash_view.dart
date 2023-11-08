@@ -25,7 +25,7 @@ class SplashView extends StatelessWidget {
                     width: context.width,
                     height: context.height,
                     child: Container(
-                      color: Color.fromARGB(255, 42, 38, 38),
+                      color: const Color.fromARGB(255, 42, 38, 38),
                     )),
                 Column(
                   mainAxisAlignment: MainAxisAlignment.center,

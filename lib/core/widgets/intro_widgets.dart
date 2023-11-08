@@ -16,7 +16,7 @@ Widget introWidget(BuildContext context){
     height: context.height*0.53,
 
     child: Center(
-        child: SvgPicture.asset(Assets.icons.svg.iconBrand3),
+        child: SvgPicture.asset(Assets.icons.svg.iconBrand1),
     ),
   );
 }

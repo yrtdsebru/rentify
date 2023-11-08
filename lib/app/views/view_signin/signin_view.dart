@@ -52,7 +52,16 @@ class SignInView extends StatelessWidget with CustomWidgets {
                             'E-mail',
                             context,
                             prefixIcon: const Icon(Icons.email_outlined),
-                            context.read<SignInViewModel>().emailController),
+                            context.read<SignInViewModel>().emailController,
+                            keyboardType: TextInputType.emailAddress,
+                            validator: (value) {
+                          if (!RegExp(
+                                  r'^[a-zA-Z0-9ğüşıöjçĞÜşŞİÖÇ\._%+-]+@[a-zA-Z0-9ğüşıöjçĞÜşŞİÖÇ\.-]+\.[a-zA-ZğüşıöçĞÜşŞİÖÇ]{2,}$')
+                              .hasMatch(value!)) {
+                            return L10n.of(context)!.emailValidationMessage;
+                          }
+                          return null;
+                        }),
                         textInput(
                             L10n.of(context)!.password,
                             'Password',

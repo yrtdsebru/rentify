@@ -31,7 +31,7 @@ class OnboardingView extends StatelessWidget with CustomWidgets {
             child: Stack(
               alignment: Alignment.topCenter,
               children: [
-                PageView.builder(
+                PageView.builder(   //horizontal slider PageView, ListView vertical
                   controller: pageController,
                   itemCount: onboardingPages(context).length,
                   itemBuilder: ((context, index) {
@@ -94,43 +94,35 @@ class OnboardingView extends StatelessWidget with CustomWidgets {
                           ),
                         ),
                         SizedBox(height: context.height * 0.04),
-                        GestureDetector(
-                          onTap: () {
-                            context.read<OnboardingViewModel>().add(
-                                IndicatorIncrementEvent(
-                                    index, context, pageController));
-                          },
-                          child: Padding(
-                            padding: const EdgeInsets.only(right: 20, left: 20),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                buildButton(
-                                  context,
-                                  width: context.width * 0.38,
-                                  backgroundColor:
-                                      AppLightColorConstants.bgLight,
-                                  textColor: Colors.red.shade300,
-                                  hoverColor: Colors.transparent,
-                                  label: L10n.of(context)!.skip,
-                                  onPressed: () {
-                                    context.router
-                                        .push(const DecisionViewRoute());
-                                  },
-                                ),
-                                buildButton(
-                                  context,
-                                  width: context.width * 0.38,
-                                  label: L10n.of(context)!.next,
-                                  onPressed: () {
-                                    context.read<OnboardingViewModel>().add(
-                                        IndicatorIncrementEvent(
-                                            index, context, pageController));
-                                  },
-                                  rightIcon: Icons.navigate_next_outlined,
-                                ),
-                              ],
-                            ),
+                        Padding(
+                          padding: const EdgeInsets.only(right: 20, left: 20),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              buildButton(
+                                context,
+                                width: context.width * 0.38,
+                                backgroundColor: AppLightColorConstants.bgLight,
+                                textColor: Colors.red.shade300,
+                                hoverColor: Colors.transparent,
+                                label: L10n.of(context)!.skip,
+                                onPressed: () {
+                                  context.router
+                                      .push(const DecisionViewRoute());
+                                },
+                              ),
+                              buildButton(
+                                context,
+                                width: context.width * 0.38,
+                                label: L10n.of(context)!.next,
+                                onPressed: () {
+                                  context.read<OnboardingViewModel>().add(
+                                      IndicatorIncrementEvent(
+                                          index, context, pageController));
+                                },
+                                rightIcon: Icons.navigate_next_outlined,
+                              ),
+                            ],
                           ),
                         ),
                       ],

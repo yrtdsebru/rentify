@@ -10,29 +10,36 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class SignUpViewModel extends Bloc<SignUpEvent, SignUpState> {
-  SignUpViewModel() : super(SignUpInitial()) {
-    on<SignUpInitialEvent>(_onSignUpInitialEvent);
+  SignUpViewModel() : super(SignUpInitial(false, isDateSelected: false)) {
+    on<IsDateSelectedEvent>(_isDateSelected);
   }
+  bool get isDateSelected => state.isDateSelected;
 
   TextEditingController nameController = TextEditingController();
   TextEditingController surNameController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
+  TextEditingController passwordOneController = TextEditingController();
+  TextEditingController passwordTwoController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
   TextEditingController adressController = TextEditingController();
 
   AuthService authService = AuthService();
 
+  FutureOr<void> _isDateSelected(
+      IsDateSelectedEvent event, Emitter<SignUpState> emit) {
+    emit(SignUpInitial(event.isDateSelected, isDateSelected: false));
+  }
+
   Future<FutureOr<void>> _onSignUpInitialEvent(
       SignUpInitialEvent event, Emitter<SignUpState> emit) async {
     try {
-      await authService.signUp(SignUpRequestModel(
-          name: nameController.text,
-          surname: surNameController.text.trim(),
-          address: adressController.text,
-          phoneNumber: phoneController.text.trim(),
-          email: emailController.text.trim(),
-          password: passwordController.text.trim()));
+      // await authService.signUp(SignUpRequestModel(
+      //     name: nameController.text,
+      //     surname: surNameController.text.trim(),
+      //     address: adressController.text,
+      //     phoneNumber: phoneController.text.trim(),
+      //     email: emailController.text.trim(),
+      //     password: passwordOneController.text.trim()));
 
       Future.delayed(const Duration(seconds: 2), () {
         Navigator.of(event.context).push(MaterialPageRoute(builder: (context) {

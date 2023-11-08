@@ -46,23 +46,14 @@ class $AssetsIconsSvgGen {
   /// File path: assets/icons/svg/icon_Brand2.svg
   String get iconBrand2 => 'assets/icons/svg/icon_Brand2.svg';
 
-  /// File path: assets/icons/svg/icon_Brand3.svg
-  String get iconBrand3 => 'assets/icons/svg/icon_Brand3.svg';
-
-  /// File path: assets/icons/svg/icon_Brand4.svg
-  String get iconBrand4 => 'assets/icons/svg/icon_Brand4.svg';
-
-  /// File path: assets/icons/svg/icon_Brand5.svg
-  String get iconBrand5 => 'assets/icons/svg/icon_Brand5.svg';
-
-  /// File path: assets/icons/svg/icon_Brand6.svg
-  String get iconBrand6 => 'assets/icons/svg/icon_Brand6.svg';
-
   /// File path: assets/icons/svg/icon_Check.svg
   String get iconCheck => 'assets/icons/svg/icon_Check.svg';
 
   /// File path: assets/icons/svg/icon_Google.svg
   String get iconGoogle => 'assets/icons/svg/icon_Google.svg';
+
+  /// File path: assets/icons/svg/icon_Rent1.svg
+  String get iconRent1 => 'assets/icons/svg/icon_Rent1.svg';
 
   /// File path: assets/icons/svg/icon_US.svg
   String get iconUS => 'assets/icons/svg/icon_US.svg';
@@ -222,6 +213,9 @@ class $AssetsIconsSvgGen {
   /// File path: assets/icons/svg/icon_flash_icon.svg
   String get iconFlashIcon => 'assets/icons/svg/icon_flash_icon.svg';
 
+  /// File path: assets/icons/svg/icon_for_rent.svg
+  String get iconForRent => 'assets/icons/svg/icon_for_rent.svg';
+
   /// File path: assets/icons/svg/icon_home.svg
   String get iconHome => 'assets/icons/svg/icon_home.svg';
 
@@ -255,8 +249,20 @@ class $AssetsIconsSvgGen {
   /// File path: assets/icons/svg/icon_money.svg
   String get iconMoney => 'assets/icons/svg/icon_money.svg';
 
+  /// File path: assets/icons/svg/icon_money_with_key.svg
+  String get iconMoneyWithKey => 'assets/icons/svg/icon_money_with_key.svg';
+
   /// File path: assets/icons/svg/icon_moon.svg
   String get iconMoon => 'assets/icons/svg/icon_moon.svg';
+
+  /// File path: assets/icons/svg/icon_onboarding3.svg
+  String get iconOnboarding3 => 'assets/icons/svg/icon_onboarding3.svg';
+
+  /// File path: assets/icons/svg/icon_onborading2.svg
+  String get iconOnborading2 => 'assets/icons/svg/icon_onborading2.svg';
+
+  /// File path: assets/icons/svg/icon_pay_card.svg
+  String get iconPayCard => 'assets/icons/svg/icon_pay_card.svg';
 
   /// File path: assets/icons/svg/icon_qr_scanner.svg
   String get iconQrScanner => 'assets/icons/svg/icon_qr_scanner.svg';
@@ -264,8 +270,20 @@ class $AssetsIconsSvgGen {
   /// File path: assets/icons/svg/icon_recycle.svg
   String get iconRecycle => 'assets/icons/svg/icon_recycle.svg';
 
+  /// File path: assets/icons/svg/icon_recycle_word.svg
+  String get iconRecycleWord => 'assets/icons/svg/icon_recycle_word.svg';
+
   /// File path: assets/icons/svg/icon_rent.svg
   String get iconRent => 'assets/icons/svg/icon_rent.svg';
+
+  /// File path: assets/icons/svg/icon_rent2.svg
+  String get iconRent2 => 'assets/icons/svg/icon_rent2.svg';
+
+  /// File path: assets/icons/svg/icon_rent_button.svg
+  String get iconRentButton => 'assets/icons/svg/icon_rent_button.svg';
+
+  /// File path: assets/icons/svg/icon_rent_table.svg
+  String get iconRentTable => 'assets/icons/svg/icon_rent_table.svg';
 
   /// File path: assets/icons/svg/icon_sack_dollar.svg
   String get iconSackDollar => 'assets/icons/svg/icon_sack_dollar.svg';
@@ -325,12 +343,9 @@ class $AssetsIconsSvgGen {
         empty,
         iconBrand1,
         iconBrand2,
-        iconBrand3,
-        iconBrand4,
-        iconBrand5,
-        iconBrand6,
         iconCheck,
         iconGoogle,
+        iconRent1,
         iconUS,
         iconBank,
         iconBell,
@@ -383,6 +398,7 @@ class $AssetsIconsSvgGen {
         iconFlagTr,
         iconFlagUae,
         iconFlashIcon,
+        iconForRent,
         iconHome,
         iconInvoice,
         iconKeyHand,
@@ -394,10 +410,18 @@ class $AssetsIconsSvgGen {
         iconMastercard,
         iconMessages,
         iconMoney,
+        iconMoneyWithKey,
         iconMoon,
+        iconOnboarding3,
+        iconOnborading2,
+        iconPayCard,
         iconQrScanner,
         iconRecycle,
+        iconRecycleWord,
         iconRent,
+        iconRent2,
+        iconRentButton,
+        iconRentTable,
         iconSackDollar,
         iconScanner,
         iconSendRight,

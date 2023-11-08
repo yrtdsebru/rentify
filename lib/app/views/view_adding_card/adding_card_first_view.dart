@@ -13,7 +13,7 @@ class AddingCardFirstView extends StatelessWidget with CustomWidgets {
             child: Column(
               children: [
                 Image.asset(
-                  Assets.icons.svg.iconBrand6,// Resim dosya yolu
+                  Assets.icons.svg.iconBrand2,// Resim dosya yolu
                   width: 400, // Resim genişliği
                   height: 350, // Resim yüksekliği
                 ),

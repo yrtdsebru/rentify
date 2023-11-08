@@ -44,7 +44,7 @@ class SplashViewModel extends Bloc<SplashEvent, SplashState> {
         Future.delayed(const Duration(seconds: 3), () {
             state.isNewUser?
                 event.context.router.replace(OnboardingViewRoute())
-                : event.context.router.replace(DecisionViewRoute()); //RegistrationViewRoute
+                : event.context.router.replace(const DecisionViewRoute());
           });
   }
 }

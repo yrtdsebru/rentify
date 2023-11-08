@@ -1,8 +1,7 @@
+import 'package:hive_flutter/adapters.dart';
 import 'package:rentify/app/app.dart';
 import 'package:rentify/app/l10n/app_localizations.dart';
 import 'package:rentify/app/routes/app_router.dart';
-import 'package:rentify/app/theme/dark_theme_data.dart';
-import 'package:rentify/app/theme/light_theme_data.dart';
 import 'package:rentify/app/views/view_profile/view_model/profile_event.dart';
 import 'package:rentify/app/views/view_profile/view_model/profile_state.dart';
 import 'package:rentify/app/views/view_profile/view_model/profile_view_model.dart';
@@ -18,16 +17,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 @RoutePage()
 class ProfileView extends StatelessWidget with CustomWidgets {
   const ProfileView({super.key});
-
-  void isDarkMode(
-    bool event,
-    BuildContext context,
-  ) {
-    context.read<ProfileViewModel>().add(DarkModeEvent(event));
-    event
-        ? App.setTheme(context, AppThemeDark.getTheme())
-        : App.setTheme(context, AppThemeLight.getTheme());
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -175,17 +164,22 @@ class ProfileView extends StatelessWidget with CustomWidgets {
                                             ),
                                             trailing: Transform.scale(
                                               scale: 0.8,
-                                              child: CupertinoSwitch(
-                                                value: context
-                                                        .read<
-                                                            ProfileViewModel>()
-                                                        .state
-                                                        .isSwitch
-                                                    ? true
-                                                    : false,
-                                                onChanged: (value) =>
-                                                    isDarkMode(value, context),
-                                              ),
+                                              child: ValueListenableBuilder(
+                                                  valueListenable:
+                                                      Hive.box('settings')
+                                                          .listenable(),
+                                                  builder:
+                                                      (context, box, child) {
+                                                    final isDark = box.get(
+                                                        'isDark',
+                                                        defaultValue: false);
+                                                    return Switch(
+                                                        value: isDark,
+                                                        onChanged: (val) {
+                                                          box.put(
+                                                              'isDark', val);
+                                                        });
+                                                  }),
                                             )),
                                         const Divider(
                                           endIndent: 20,

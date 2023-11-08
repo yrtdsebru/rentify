@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/adapters.dart';
 import 'package:rentify/app/routes/app_router.gr.dart';
 import 'package:rentify/app/views/view_signin/signin_view.dart';
 import 'package:rentify/core/extension/context_extension.dart';
@@ -24,12 +25,31 @@ class DecisionView extends StatelessWidget {
             const SizedBox(
               height: 70,
             ),
-            DecisionButton(Assets.driver.path, 'Sing in As Tenant', () {
-              //kiracı
-              // authController.isLoginAsDriver = true;
-              //  context.to(()=> SignInViewRoute());
-              context.router.push(const SignInViewRoute());
-            }, context.width * 0.8),
+
+            //theme color
+            ValueListenableBuilder(
+                valueListenable: Hive.box('settings').listenable(),
+                builder: (context, box, child) {
+                  final isDark = box.get('isDark', defaultValue: false);
+                  return Switch(
+                      value: isDark,
+                      onChanged: (val) {
+                        box.put('isDark', val);
+                      });
+                }),
+            ValueListenableBuilder(
+                valueListenable: Hive.box('settings').listenable(),
+                builder: (context, box, child) {
+                  final isLand = box.get('isLand', defaultValue: false);
+                  return DecisionButton(Assets.driver.path, 'Sing in As Tenant',
+                      () {
+                    //kiracı
+                    // authController.isLoginAsDriver = true;
+                    //  context.to(()=> SignInViewRoute());
+                    context.router.push(const SignInViewRoute());
+                  }, context.width * 0.8);
+                }),
+
             const SizedBox(
               height: 20,
             ),

@@ -5,7 +5,7 @@ class L10nTr extends L10n {
   L10nTr([String locale = 'tr']) : super(locale);
 
   @override
-  String get appName => 'HannGar';
+  String get appName => 'Rentify';
 
   @override
   String get languageSelect => 'Türkçe';
